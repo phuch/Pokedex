@@ -14,5 +14,5 @@ Follow the instruction in the command line to open it with a emulator or a physi
 
 ## Implementation
 
-This app is implemented using React Native and Redux and [PokeAPI](https://pokeapi.co/) 
+This app is implemented using React Native, Redux and [PokeAPI](https://pokeapi.co/) 
 
