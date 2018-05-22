@@ -45,7 +45,7 @@ class HomeScreen extends React.Component {
     });
     getPokemonJSON(`${pokeApiUrl}/type/${typeId}`)
     .then(type => {
-      const pokemons = type.pokemon.splice(0,10).map((pokemon) => {
+      const pokemons = type.pokemon.splice(0,20).map((pokemon) => {
         return getPokemonJSON(`${pokemon.pokemon.url}`)
       });
       return Promise.all(pokemons);
@@ -75,7 +75,6 @@ class HomeScreen extends React.Component {
         {pokemons.length == 0 && <Text style={styles.text}>Choose a type to see Pokemons of that type</Text>}
         <PokemonList
             pokemons={pokemons}
-            types={types}
             refreshing={isLoading}
             onRefresh={this.getPokemonByType}
             handleNavigation={this.handleNavigation}

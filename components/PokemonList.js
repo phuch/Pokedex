@@ -19,7 +19,6 @@ const PokemonList = (props) => {
           renderItem={({ item }) => (
               <PokemonListItem
                 pokemon={item}
-                types={types}
                 onPress={handleNavigation}
               />
           )}
