@@ -1,0 +1,1 @@
+export const pokeApiUrl = 'http://pokeapi.co/api/v2';

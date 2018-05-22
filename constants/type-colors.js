@@ -1,0 +1,22 @@
+export default {
+  normal: '#A8A77A',
+  fighting: '#BE322E',
+  flying: '#A892ED',
+  poison: '#9E449E',
+  ground: '#DFBF6E',
+  rock: '#B79F41',
+  bug: '#A8B732',
+  ghost: '#6F5996',
+  steel: '#B8B9CF',
+  fire: '#EE803B',
+  water: '#6A92ED',
+  grass: '#7AC757',
+  electric: '#F7CF43',
+  psychic: '#F65A89',
+  ice: '#9AD8D8',
+  dragon: '#7043F8',
+  dark: '#6F5849',
+  fairy: '#EC9AAC',
+  unknown: '#699F90',
+  shadow: '#333E4C'
+}
