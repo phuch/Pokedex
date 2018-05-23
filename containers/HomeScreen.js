@@ -2,18 +2,15 @@ import React from 'react';
 import PokemonList from '../components/PokemonList';
 import PokemonTypesBar from '../components/PokemonTypesBar';
 import {StyleSheet, View, Text} from 'react-native';
-import getPokemonJSON from '../util/getPokemonJSON';
-import { pokeApiUrl } from '../constants/config';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getPokemonTypesAction, getPokemonsAction } from "../actions/pokedex-actions";
+
 
 class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      types: null,
-      pokemons: [],
-      isLoading: false
-    }
   }
 
   componentDidMount() {
@@ -21,42 +18,13 @@ class HomeScreen extends React.Component {
   }
 
   getPokemonTypes = () => {
-
-    getPokemonJSON(`${pokeApiUrl}/type`)
-      .then(types => {
-         const typesName = types.results.map((t,index) => {
-           const id = t.url.slice(t.url.indexOf('type/') + 5, t.url.length).replace('/','');
-           const type = {
-             id: id,
-             name: t.name
-           }
-           return type;
-         });
-         this.setState({
-           types: typesName
-         })
-      })
-      .catch(err => console.log(err));
+    const { getPokemonTypesAction } = this.props;
+    getPokemonTypesAction();
   };
 
   getPokemonByType = (typeId) => {
-    this.setState({
-      isLoading: true
-    });
-    getPokemonJSON(`${pokeApiUrl}/type/${typeId}`)
-    .then(type => {
-      const pokemons = type.pokemon.splice(0,20).map((pokemon) => {
-        return getPokemonJSON(`${pokemon.pokemon.url}`)
-      });
-      return Promise.all(pokemons);
-    })
-    .then(pkm => {
-      this.setState({
-        pokemons: pkm,
-        isLoading: false
-      })
-    })
-    .catch(err => console.log(err));
+    const { getPokemonsAction } = this.props;
+    getPokemonsAction(typeId);
   }
 
   handleNavigation = (routeName, params) => {
@@ -65,23 +33,38 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { types, pokemons, isLoading } = this.state;
+    const {types, pokemons, isLoading } = this.props;
     return (
       <View style={styles.container}>
-        <PokemonTypesBar
-            types={types}
-            getPokemonByType={this.getPokemonByType}
-        />
-        {pokemons.length == 0 && <Text style={styles.text}>Choose a type to see Pokemons of that type</Text>}
-        <PokemonList
-            pokemons={pokemons}
-            refreshing={isLoading}
-            onRefresh={this.getPokemonByType}
-            handleNavigation={this.handleNavigation}
-        />
+          <PokemonTypesBar
+              types={types}
+              getPokemonByType={this.getPokemonByType}
+          />
+          {pokemons.length == 0 && <Text style={styles.text}>Choose a type to see Pokemons of that type</Text>}
+          <PokemonList
+              pokemons={pokemons}
+              refreshing={isLoading}
+              onRefresh={this.getPokemonByType}
+              handleNavigation={this.handleNavigation}
+          />
       </View>
     )
   }
+}
+
+const mapStateToProps = (store) => {
+    return {
+        isLoading: store.pokedexState.isLoading,
+        pokemons: store.pokedexState.pokemons,
+        types: store.pokedexState.types
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getPokemonTypesAction: bindActionCreators(getPokemonTypesAction, dispatch),
+        getPokemonsAction: bindActionCreators(getPokemonsAction, dispatch)
+    }
 }
 
 const styles = StyleSheet.create({
@@ -96,4 +79,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

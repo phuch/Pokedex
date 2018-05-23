@@ -24,7 +24,6 @@ const PokeInfo = (props) => {
     return statObject;
   });
 
-  console.log(stats);
 
   return (
       <View style={styles.container}>
