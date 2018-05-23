@@ -14,7 +14,7 @@ const AppNavigator = createStackNavigator({
   initialRouteName: 'Home',
   navigationOptions: {
     headerBackTitle: 'Back',
-    headerTitle: 'ポケモンデックス'
+    headerTitle: 'ポケデックス'
   }
 });
 
